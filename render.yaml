@@ -41,6 +41,7 @@ services:
     region: ohio
     plan: free
     maxmemoryPolicy: allkeys-lru
+    ipAllowList: [] # Empty list means only internal Render services can access this Redis
 
 databases:
   # ─── PostgreSQL Database ────────────────────────────────────────────────────
