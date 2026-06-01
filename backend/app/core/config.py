@@ -30,6 +30,17 @@ class Settings(BaseSettings):
     # ─── Database ──────────────────────────────────────────────────────────
     DATABASE_URL: str
 
+    @validator("DATABASE_URL", pre=True)
+    @classmethod
+    def fix_database_url(cls, v):
+        if isinstance(v, str):
+            # Render provides "postgres://", but SQLAlchemy async requires "postgresql+asyncpg://"
+            if v.startswith("postgres://"):
+                v = v.replace("postgres://", "postgresql+asyncpg://", 1)
+            elif v.startswith("postgresql://"):
+                v = v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return v
+
     # ─── Redis ─────────────────────────────────────────────────────────────
     REDIS_URL: str
 
